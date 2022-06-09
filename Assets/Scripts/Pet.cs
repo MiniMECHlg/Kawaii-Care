@@ -8,29 +8,72 @@ public class Pet : MonoBehaviour
     private int happiness;
     private int hunger;
 
-    private int animVal = 0;
-    private int nextAnimVal = 0;
-    private int totalFrames = 0;
-    private itn currentFrame = 1;
+    private bool animate = false;
+    private int animVal = 2;
+    private int nextAnimVal = 2;
+    private int currentFrame = 0;
     public List<Sprite> greetingAnim = new List<Sprite>();
     public List<Sprite> idleAnim = new List<Sprite>();
     public List<Sprite> walkingAnim = new List<Sprite>();
     public List<Sprite> feedingAnim = new List<Sprite>();
+    public List<List<Sprite>> Anims = new List<List<Sprite>>();
+    private float frameTime = 1/4f;
+    private float currentTime = 0f;
+
+    public SpriteRenderer self;
 
     public void changeCurrentAnim(int animVal)
     {
-        
+        this.nextAnimVal = animVal;
+        if (this.animVal == 0 || this.animVal == 3)
+        {
+            Debug.Log("This should do nothing");
+        }
+        else
+        {
+            this.animVal = this.nextAnimVal;
+        }
     }
 
     public void animCycle()
     {
-
+        this.currentTime = this.currentTime + Time.deltaTime;
+        if(this.currentTime >= this.frameTime)
+        {
+            this.currentTime = 0;
+            if(this.currentFrame + 1 == Anims[this.animVal].Count)
+            {
+                this.currentFrame = 0;
+                if(this.animVal == 0 || this.animVal == 3)
+                {
+                    this.animVal = this.nextAnimVal;
+                }
+            }
+            else
+            {
+                this.currentFrame = this.currentFrame + 1;
+            }
+            this.self.sprite = Anims[this.animVal][this.currentFrame];
+        }
     }
 
-    public void start()
+    public void Start()
     {
-        changeCurrentAnim(0);
-        animCycle();
+        Anims.Add(this.greetingAnim);
+        Anims.Add(this.idleAnim);
+        Anims.Add(this.walkingAnim);
+        Anims.Add(this.feedingAnim);
+        this.animate = true;
+        this.animVal = 2;
+        //changeCurrentAnim(1);
+    }
+
+    public void Update()
+    {
+        if (this.animate == true)
+        {
+            animCycle();
+        }
     }
 
     public void feed(int points)

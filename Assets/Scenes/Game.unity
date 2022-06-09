@@ -497,7 +497,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 301630678067255945, guid: 650b02582445b33d7a1c3660cae8f2a5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -561,7 +561,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3edcabcba0bdeb3628ea13f17f8c8f6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  greetingAnim: []
+  greetingAnim:
+  - {fileID: 0}
   idleAnim:
   - {fileID: 301630678067255945, guid: 650b02582445b33d7a1c3660cae8f2a5, type: 3}
   - {fileID: -7993782013697050230, guid: 650b02582445b33d7a1c3660cae8f2a5, type: 3}
@@ -577,7 +578,9 @@ MonoBehaviour:
   - {fileID: 6063229545318949324, guid: fb72d0ad8f1ed93d59e69ebcaa3c59de, type: 3}
   - {fileID: 3705076766247281095, guid: fb72d0ad8f1ed93d59e69ebcaa3c59de, type: 3}
   - {fileID: -2627055131603777121, guid: fb72d0ad8f1ed93d59e69ebcaa3c59de, type: 3}
-  feedingAnim: []
+  feedingAnim:
+  - {fileID: 0}
+  self: {fileID: 890492143}
 --- !u!1 &1028854380
 GameObject:
   m_ObjectHideFlags: 0
