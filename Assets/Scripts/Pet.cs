@@ -9,8 +9,8 @@ public class Pet : MonoBehaviour
     private int hunger;
 
     private bool animate = false;
-    private int animVal = 2;
-    private int nextAnimVal = 2;
+    private int animVal = 1;
+    private int nextAnimVal = 1;
     private int currentFrame = 0;
     public List<Sprite> greetingAnim = new List<Sprite>();
     public List<Sprite> idleAnim = new List<Sprite>();
@@ -22,7 +22,10 @@ public class Pet : MonoBehaviour
 
     public SpriteRenderer self;
 
-    public void changeCurrentAnim(int animVal)
+    public Image heart;
+    public Text heartText;
+
+    public void ChangeCurrentAnim(int animVal)
     {
         this.nextAnimVal = animVal;
         if (this.animVal == 0 || this.animVal == 3)
@@ -35,7 +38,7 @@ public class Pet : MonoBehaviour
         }
     }
 
-    public void animCycle()
+    public void AnimCycle()
     {
         this.currentTime = this.currentTime + Time.deltaTime;
         if(this.currentTime >= this.frameTime)
@@ -64,16 +67,18 @@ public class Pet : MonoBehaviour
         Anims.Add(this.walkingAnim);
         Anims.Add(this.feedingAnim);
         this.animate = true;
-        this.animVal = 2;
-        //changeCurrentAnim(1);
+        this.animVal = 1;
+        this.happiness = 65;
     }
 
     public void Update()
     {
         if (this.animate == true)
         {
-            animCycle();
+            AnimCycle();
         }
+        this.heart.fillAmount = this.happiness/100f;
+        this.heartText.text = this.happiness.ToString() + "%";
     }
 
     public void feed(int points)

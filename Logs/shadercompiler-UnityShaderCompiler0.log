@@ -2,3 +2,5 @@ Base path: '/home/lucy/UnityVersions/2021.1.27f1/Editor/Data', plugins path '/ho
 Cmd: initializeCompiler
 
 Cmd: shutdown
+
+Quitting shader compiler process
