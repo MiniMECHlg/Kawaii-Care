@@ -24,6 +24,8 @@ public class Pet : MonoBehaviour
 
     public Image heart;
     public Text heartText;
+    public Image food;
+    public Text foodText;
 
     public void ChangeCurrentAnim(int animVal)
     {
@@ -69,6 +71,7 @@ public class Pet : MonoBehaviour
         this.animate = true;
         this.animVal = 1;
         this.happiness = 65;
+        this.hunger = 65;
     }
 
     public void Update()
@@ -79,6 +82,8 @@ public class Pet : MonoBehaviour
         }
         this.heart.fillAmount = this.happiness/100f;
         this.heartText.text = this.happiness.ToString() + "%";
+        this.food.fillAmount = this.hunger/100f;
+        this.foodText.text = this.hunger.ToString() + "%";
     }
 
     public void feed(int points)
