@@ -341,6 +341,7 @@
 -r:"Library/Bee/artifacts/2400b0aE.dag/UnityEditor.UI.ref.dll"
 -r:"Library/Bee/artifacts/2400b0aE.dag/UnityEngine.UI.ref.dll"
 -r:"Library/Bee/artifacts/2400b0aE.dag/VSSettingsProvider.ref.dll"
+"Assets/Scripts/Background.cs"
 "Assets/Scripts/Pet.cs"
 "Assets/Scripts/Steve.cs"
 -langversion:8.0
