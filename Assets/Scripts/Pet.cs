@@ -9,8 +9,8 @@ public class Pet : MonoBehaviour
     private int hunger;
 
     private bool animate = false;
-    private int animVal = 1;
-    private int nextAnimVal = 1;
+    private int animVal = 0;
+    private int nextAnimVal = 0;
     private int currentFrame = 0;
     public List<Sprite> greetingAnim = new List<Sprite>();
     public List<Sprite> idleAnim = new List<Sprite>();
@@ -19,6 +19,14 @@ public class Pet : MonoBehaviour
     public List<List<Sprite>> Anims = new List<List<Sprite>>();
     private float frameTime = 1/4f;
     private float currentTime = 0f;
+
+    private bool direction = false;
+    private float target = 0f;
+    private bool moving = false;
+    private float totalIdleTime = 1f;
+    private float currentIdleTime = 0f;
+    private float movementSpeed = 0.5f;
+
 
     public SpriteRenderer self;
 
@@ -30,7 +38,7 @@ public class Pet : MonoBehaviour
     public void ChangeCurrentAnim(int animVal)
     {
         this.nextAnimVal = animVal;
-        if (this.animVal == 0 || this.animVal == 3)
+        if (this.nextAnimVal == 0 || this.nextAnimVal == 3)
         {
             Debug.Log("This should do nothing");
         }
@@ -49,16 +57,17 @@ public class Pet : MonoBehaviour
             if(this.currentFrame + 1 == Anims[this.animVal].Count)
             {
                 this.currentFrame = 0;
-                if(this.animVal == 0 || this.animVal == 3)
+                if(this.animVal != 0 || this.animVal == 3)
                 {
                     this.animVal = this.nextAnimVal;
                 }
+                this.self.sprite = Anims[this.animVal][this.currentFrame];
             }
             else
             {
                 this.currentFrame = this.currentFrame + 1;
+                this.self.sprite = Anims[this.animVal][this.currentFrame];
             }
-            this.self.sprite = Anims[this.animVal][this.currentFrame];
         }
     }
 
@@ -69,7 +78,8 @@ public class Pet : MonoBehaviour
         Anims.Add(this.walkingAnim);
         Anims.Add(this.feedingAnim);
         this.animate = true;
-        this.animVal = 1;
+        this.animVal = 0;
+        ChangeCurrentAnim(1);
         this.happiness = 65;
         this.hunger = 65;
     }
@@ -80,13 +90,77 @@ public class Pet : MonoBehaviour
         {
             AnimCycle();
         }
+        PetMovmentController();
+        MovePet();
         this.heart.fillAmount = this.happiness/100f;
         this.heartText.text = this.happiness.ToString() + "%";
         this.food.fillAmount = this.hunger/100f;
         this.foodText.text = this.hunger.ToString() + "%";
     }
 
-    public void feed(int points)
+    private void PetMovmentController()
+    {
+        if((this.animVal == 2 && this.moving == false) || (this.animVal == 1 && this.currentIdleTime >= this.totalIdleTime))
+        {
+            int nextAnim = Random.Range(0,2);
+            if (nextAnim == 0)
+            {
+                ChangeCurrentAnim(1);
+                this.currentIdleTime = 0;
+            }
+            else
+            {
+                this.target = Random.Range(-2.5f, 2.5f);
+                if (this.target >= this.transform.position.x)
+                {
+                    this.direction = false;
+                    this.GetComponent<SpriteRenderer>().flipX = false;
+                }
+                else
+                {
+                    this.direction = true;
+                    this.GetComponent<SpriteRenderer>().flipX = true;
+                }
+                this.moving = true;
+                ChangeCurrentAnim(2);
+            }
+        }
+    }
+
+    private void MovePet()
+    {
+        if(this.moving == true)
+        {
+            if (this.direction == false)
+            {
+                if (this.transform.position.x < this.target)
+                {
+                    this.transform.position = new Vector3((this.transform.position.x + movementSpeed * Time.deltaTime), this.transform.position.y);
+                }
+                else
+                {
+                    this.moving = false;
+                }
+            }
+            else
+            {
+                if (this.transform.position.x > this.target)
+                {
+                    this.transform.position = new Vector3((this.transform.position.x - movementSpeed * Time.deltaTime), this.transform.position.y);
+                }
+                else
+                {
+                    this.moving = false;
+                }
+            }
+        }
+        else if (this.currentIdleTime < this.totalIdleTime && this.animVal == 1)
+        {
+            this.currentIdleTime = this.currentIdleTime + Time.deltaTime;
+        }
+    }
+
+    public void Feed(int points)
     {
         if ((this.hunger + points) > 100)
         {
@@ -98,7 +172,7 @@ public class Pet : MonoBehaviour
         }
     }
 
-    public void play(int points)
+    public void Play(int points)
     {
         if ((this.happiness + points) > 100)
         {
