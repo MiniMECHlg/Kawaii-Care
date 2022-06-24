@@ -44,6 +44,7 @@ public class Pet : MonoBehaviour
         }
         else
         {
+            this.currentFrame = 0;
             this.animVal = this.nextAnimVal;
         }
     }
