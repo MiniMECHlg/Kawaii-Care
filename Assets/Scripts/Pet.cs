@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class Pet : MonoBehaviour
 {
-    private int happiness;
-    private int hunger;
+    public int happiness {get; private set;}
+    public int hunger {get; private set;}
 
     private bool animate = false;
     private int animVal = 0;
@@ -23,17 +23,12 @@ public class Pet : MonoBehaviour
     private bool direction = false;
     private float target = 0f;
     private bool moving = false;
-    private float totalIdleTime = 1f;
+    private float totalIdleTime = 3f;
     private float currentIdleTime = 0f;
     private float movementSpeed = 0.5f;
 
 
     public SpriteRenderer self;
-
-    public Image heart;
-    public Text heartText;
-    public Image food;
-    public Text foodText;
 
     public void ChangeCurrentAnim(int animVal)
     {
@@ -93,10 +88,6 @@ public class Pet : MonoBehaviour
         }
         PetMovmentController();
         MovePet();
-        this.heart.fillAmount = this.happiness/100f;
-        this.heartText.text = this.happiness.ToString() + "%";
-        this.food.fillAmount = this.hunger/100f;
-        this.foodText.text = this.hunger.ToString() + "%";
     }
 
     private void PetMovmentController()
@@ -182,6 +173,18 @@ public class Pet : MonoBehaviour
         else
         {
             this.happiness = this.happiness + points;
+        }
+    }
+
+    public void Tick()
+    {
+        if ((this.happiness != 0))
+        {
+            this.happiness = this.happiness - 1;
+        }
+        if ((this.hunger != 0))
+        {
+            this.hunger = this.hunger - 1;
         }
     }
 }

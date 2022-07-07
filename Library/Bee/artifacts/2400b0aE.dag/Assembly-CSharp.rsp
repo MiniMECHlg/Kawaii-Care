@@ -342,9 +342,12 @@
 -r:"Library/Bee/artifacts/2400b0aE.dag/UnityEngine.UI.ref.dll"
 -r:"Library/Bee/artifacts/2400b0aE.dag/VSSettingsProvider.ref.dll"
 "Assets/Scripts/Background.cs"
+"Assets/Scripts/GameManager.cs"
 "Assets/Scripts/Pet.cs"
+"Assets/Scripts/PetManager.cs"
 "Assets/Scripts/Scaler.cs"
 "Assets/Scripts/Steve.cs"
+"Assets/Scripts/UIManager.cs"
 -langversion:8.0
 
 /deterministic
