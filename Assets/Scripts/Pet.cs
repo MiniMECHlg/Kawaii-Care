@@ -23,24 +23,23 @@ public class Pet : MonoBehaviour
     private bool direction = false;
     private float target = 0f;
     private bool moving = false;
-    private float totalIdleTime = 3f;
+    private float totalIdleTime = 2f;
     private float currentIdleTime = 0f;
     private float movementSpeed = 0.5f;
 
 
     public SpriteRenderer self;
 
-    public void ChangeCurrentAnim(int animVal)
+    public void ChangeCurrentAnim(int animValue)
     {
-        this.nextAnimVal = animVal;
-        if (this.nextAnimVal == 0 || this.nextAnimVal == 3)
+        if (this.animVal == 0 || this.animVal == 3)
         {
-            Debug.Log("This should do nothing");
+            this.nextAnimVal = animValue;
         }
         else
         {
             this.currentFrame = 0;
-            this.animVal = this.nextAnimVal;
+            this.animVal = animValue;
         }
     }
 
@@ -53,7 +52,7 @@ public class Pet : MonoBehaviour
             if(this.currentFrame + 1 == Anims[this.animVal].Count)
             {
                 this.currentFrame = 0;
-                if(this.animVal != 0 || this.animVal == 3)
+                if(this.animVal == 0 || this.animVal == 3)
                 {
                     this.animVal = this.nextAnimVal;
                 }
@@ -152,9 +151,13 @@ public class Pet : MonoBehaviour
         }
     }
 
-    public void Feed(int points)
+    public bool Feed(int points)
     {
-        if ((this.hunger + points) > 100)
+        if (this.hunger == 100)
+        {
+            return false;
+        }
+        else if ((this.hunger + points) > 100)
         {
             this.hunger = 100;
         }
@@ -162,6 +165,9 @@ public class Pet : MonoBehaviour
         {
             this.hunger = this.hunger + points;
         }
+        ChangeCurrentAnim(3);
+        ChangeCurrentAnim(1);
+        return true;
     }
 
     public void Play(int points)

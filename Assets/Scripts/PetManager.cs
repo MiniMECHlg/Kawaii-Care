@@ -25,4 +25,9 @@ public class PetManager : MonoBehaviour
         }
         currentTime = currentTime + Time.deltaTime;
     }
+
+    public bool Feed(int foodPoints)
+    {
+        return gameManager.pets[gameManager.currentPet].Feed(foodPoints);
+    }   
 }
