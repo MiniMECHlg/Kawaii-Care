@@ -1,24 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Pet : MonoBehaviour
+public class Pet : AnimatedObject, IDropHandler
 {
     public int happiness {get; private set;}
     public int hunger {get; private set;}
 
-    private bool animate = false;
-    private int animVal = 0;
-    private int nextAnimVal = 0;
-    private int currentFrame = 0;
     public List<Sprite> greetingAnim = new List<Sprite>();
     public List<Sprite> idleAnim = new List<Sprite>();
     public List<Sprite> walkingAnim = new List<Sprite>();
     public List<Sprite> feedingAnim = new List<Sprite>();
-    public List<List<Sprite>> Anims = new List<List<Sprite>>();
-    private float frameTime = 1/4f;
-    private float currentTime = 0f;
 
     private bool direction = false;
     private float target = 0f;
@@ -27,53 +21,21 @@ public class Pet : MonoBehaviour
     private float currentIdleTime = 0f;
     private float movementSpeed = 0.5f;
 
-
-    public SpriteRenderer self;
-
-    public void ChangeCurrentAnim(int animValue)
+    public void OnDrop(PointerEventData eventData)
     {
-        if (this.animVal == 0 || this.animVal == 3)
+        Debug.Log("Pet got given something");
+        if (eventData.pointerDrag != null)
         {
-            this.nextAnimVal = animValue;
-        }
-        else
-        {
-            this.currentFrame = 0;
-            this.animVal = animValue;
-        }
-    }
-
-    public void AnimCycle()
-    {
-        this.currentTime = this.currentTime + Time.deltaTime;
-        if(this.currentTime >= this.frameTime)
-        {
-            this.currentTime = 0;
-            if(this.currentFrame + 1 == Anims[this.animVal].Count)
-            {
-                this.currentFrame = 0;
-                if(this.animVal == 0 || this.animVal == 3)
-                {
-                    this.animVal = this.nextAnimVal;
-                }
-                this.self.sprite = Anims[this.animVal][this.currentFrame];
-            }
-            else
-            {
-                this.currentFrame = this.currentFrame + 1;
-                this.self.sprite = Anims[this.animVal][this.currentFrame];
-            }
+            Debug.Log("Test");
         }
     }
 
     public void Start()
     {
-        Anims.Add(this.greetingAnim);
-        Anims.Add(this.idleAnim);
-        Anims.Add(this.walkingAnim);
-        Anims.Add(this.feedingAnim);
-        this.animate = true;
-        this.animVal = 0;
+        AddIndependant(this.greetingAnim);
+        AddAnim(this.idleAnim);
+        AddAnim(this.walkingAnim);
+        AddIndependant(this.feedingAnim);
         ChangeCurrentAnim(1);
         this.happiness = 65;
         this.hunger = 65;
@@ -91,7 +53,7 @@ public class Pet : MonoBehaviour
 
     private void PetMovmentController()
     {
-        if((this.animVal == 2 && this.moving == false) || (this.animVal == 1 && this.currentIdleTime >= this.totalIdleTime))
+        if((CurrentAnim() == 2 && this.moving == false) || (CurrentAnim() == 1 && this.currentIdleTime >= this.totalIdleTime))
         {
             int nextAnim = Random.Range(0,2);
             if (nextAnim == 0)
@@ -145,7 +107,7 @@ public class Pet : MonoBehaviour
                 }
             }
         }
-        else if (this.currentIdleTime < this.totalIdleTime && this.animVal == 1)
+        else if (this.currentIdleTime < this.totalIdleTime && CurrentAnim() == 1)
         {
             this.currentIdleTime = this.currentIdleTime + Time.deltaTime;
         }
@@ -166,6 +128,7 @@ public class Pet : MonoBehaviour
             this.hunger = this.hunger + points;
         }
         ChangeCurrentAnim(3);
+        this.moving = false;
         ChangeCurrentAnim(1);
         return true;
     }
